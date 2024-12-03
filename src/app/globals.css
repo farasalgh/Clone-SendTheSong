@@ -1,52 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@font-face {
-  font-family: "Psycho Killer W00 Regular";
-  src: url("https://db.onlinewebfonts.com/t/bc6f4113bc75a536ba95a47c004537f4.eot");
-  src: url("https://db.onlinewebfonts.com/t/bc6f4113bc75a536ba95a47c004537f4.eot?#iefix")
-      format("embedded-opentype"),
-    url("https://db.onlinewebfonts.com/t/bc6f4113bc75a536ba95a47c004537f4.woff2")
-      format("woff2"),
-    url("https://db.onlinewebfonts.com/t/bc6f4113bc75a536ba95a47c004537f4.woff")
-      format("woff"),
-    url("https://db.onlinewebfonts.com/t/bc6f4113bc75a536ba95a47c004537f4.ttf")
-      format("truetype"),
-    url("https://db.onlinewebfonts.com/t/bc6f4113bc75a536ba95a47c004537f4.svg#Psycho Killer W00 Regular")
-      format("svg");
-}
-
-.font-custom {
-  font-family: "Psycho Killer W00 Regular";
-}
-
-#header {
-  text-align: center;
-  margin-top: 100px;
-  margin-bottom: 80px;
-  padding: 20px;
-}
-
-.card-footer {
-  margin-top: 15px;
-  display: flex;
-  align-items: center;
-}
-.card-footer img {
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
-  margin-right: 10px;
-}
-.card-footer span {
-  font-size: 14px;
-  color: #6c757d;
-}
-
-.font-custom {
-  font-family: "Psycho Killer W00 Regular";
-  font-size: 1.5rem;
-}
 
 body {
   font-family: Arial, Helvetica, sans-serif;
