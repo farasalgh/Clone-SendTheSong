@@ -1,277 +1,207 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import Marquee from "@/components/ui/marquee";
-import BlurFade from "@/components/ui/blur-fade";
+import { Footer } from "@/components/ui/footer";
+import { InitialAnimation } from "@/components/initial-animation";
+import { Navbar } from "@/components/ui/navbar";
+import Link from "next/link";
+import dynamic from "next/dynamic";
+import { ArrowUpRight } from 'lucide-react';
+import { CarouselCard } from "@/components/carousel-card";
+import { motion } from "framer-motion";
 
-export function BlurFadeTextDemo() {
-  return (
-    <section id="header">
-      <BlurFade delay={0.25} inView>
-        <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-          Send The song
-        </h2>
-      </BlurFade>
-      <BlurFade delay={0.25 * 2} inView>
-        <span className="text-xl text-pretty tracking-tighter sm:text-3xl xl:text-4xl/none">
-          Express your untold message through the song.
-        </span>
-        <div className="mt-4 space-x-4 g-4">
-          <a
-            href="#"
-            className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-black rounded-lg hover:bg-black/80 focus:ring-4 focus:outline-none focus:ring-black/50 dark:bg-black dark:hover:bg-black/80 dark:focus:ring-black/50"
-          >
-            Tell You Story
-            <svg
-              className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 10"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M1 5h12m0 0L9 1m4 4L9 9"
-              />
-            </svg>
-          </a>
-          <a
-            href="#"
-            className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-black bg-white rounded-lg ring-1 ring-black hover:bg-white/80 focus:ring-4 focus:outline-none focus:ring-black/50 dark:bg-black dark:hover:bg-black/80 dark:focus:ring-black/50"
-          >
-            Support This Website
-            <svg
-              className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 10"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M1 5h12m0 0L9 1m4 4L9 9"
-              />
-            </svg>
-          </a>
-        </div>
-      </BlurFade>
-    </section>
-  );
+interface Menfess {
+  id: number;
+  sender: string;
+  recipient: string;
+  message: string;
+  spotify_id?: string;
+  track?: {
+    title: string;
+    artist: string;
+    cover_img: string;
+    preview_link: string | null;
+    spotify_embed_link: string;
+  };
+  song?: {
+    title: string;
+    artist: string;
+    coverUrl: string;
+  };
+  created_at: string;
+  updated_at?: string | null;
 }
 
-const reviews = [
-  {
-    name: "To : Jack",
-    username: "@jack",
-    body: "I've never seen anything like this before. It's amazing. I love it.",
-    img: "https://avatar.vercel.sh/jack",
-  },
-  {
-    name: "To : Jack",
-    username: "@jill",
-    body: "I don't know what to say. I'm speechless. This is amazing.",
-    img: "https://avatar.vercel.sh/jill",
-  },
-  {
-    name: "To : Jack",
-    username: "@john",
-    body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/john",
-  },
-  {
-    name: "To : Jack",
-    username: "@jane",
-    body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/jane",
-  },
-  {
-    name: "To : Jack",
-    username: "@jenny",
-    body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/jenny",
-  },
-  {
-    name: "To : Jack",
-    username: "@james",
-    body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/james",
-  },
-];
-
-const firstRow = reviews.slice(0, reviews.length / 2);
-const secondRow = reviews.slice(reviews.length / 2);
-
-const ReviewCard = ({
-  name,
-  body,
-}: {
-  img: string;
-  name: string;
-  username: string;
-  body: string;
-}) => {
-  return (
-    <figure
-      className={cn(
-        "relative w-64 cursor-pointer overflow-hidden rounded-xl border p-4",
-        // light styles
-        "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]",
-        // dark styles
-        "dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]"
-      )}
-    >
-      <div className="flex flex-row items-center gap-2">
-        <div className="flex flex-col">
-          <figcaption className="text-sm font-medium dark:text-white">
-            {name}
-          </figcaption>
-        </div>
-      </div>
-      <blockquote className="mt-2 text-sm font-custom">{body}</blockquote>
-      <div className="card-footer">
-        <img
-          alt="Album cover of Arctic Monkeys - 505"
-          height="40"
-          src="https://storage.googleapis.com/a1aa/image/d9TPgo1sqb5MHteOhEMknY11XjveQvZ93VwBOxy3BjGYqqtTA.jpg"
-          width="40"
-        />
-        <span>505 - Arctic Monkeys</span>
-      </div>
-    </figure>
-  );
-};
-
-export function MarqueeDemo() {
-  return (
-    <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
-      <Marquee pauseOnHover className="[--duration:20s]">
-        {firstRow.map((review) => (
-          <ReviewCard key={review.username} {...review} />
-        ))}
-      </Marquee>
-      <Marquee reverse pauseOnHover className="[--duration:20s]">
-        {secondRow.map((review) => (
-          <ReviewCard key={review.username} {...review} />
-        ))}
-      </Marquee>
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-white dark:from-background"></div>
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-white dark:from-background"></div>
-    </div>
-  );
+interface MenfessResponse {
+  status: boolean;
+  success: boolean;
+  message: string | null;
+  data: Menfess[];
 }
 
-export default function Home() {
+const DynamicCarousel = dynamic(() => import("@/components/carousel").then((mod) => mod.Carousel), {
+  ssr: false,
+});
+
+export default function HomePage() {
+  const [recentlyAddedMessages, setRecentlyAddedMessages] = useState<Menfess[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [currentCard, setCurrentCard] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(`https://solifess.vercel.app/v1/api/menfess-spotify-search`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch messages.");
+        }
+        
+        const responseData: MenfessResponse = await response.json();
+        
+        if (responseData.status && Array.isArray(responseData.data)) {
+          const sortedMessages = responseData.data
+            .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+            .slice(0, 5)
+            .map(menfess => ({
+              ...menfess,
+              song: menfess.track ? {
+                title: menfess.track.title,
+                artist: menfess.track.artist,
+                coverUrl: menfess.track.cover_img
+              } : undefined
+            }));
+          
+          setRecentlyAddedMessages(sortedMessages);
+        } else {
+          throw new Error("Invalid data format.");
+        }
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("An unknown error occurred.");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchMessages();
+  }, []);
+
+  const handleScroll = () => {
+    if (containerRef.current) {
+      const scrollPosition = containerRef.current.scrollLeft;
+      const cardWidth = containerRef.current.offsetWidth;
+      const newCard = Math.round(scrollPosition / cardWidth);
+      setCurrentCard(newCard);
+    }
+  };
+
   return (
-    <div>
-      <BlurFadeTextDemo />
-
-      <div className="ccontainer flex flex-col md:flex-row items-center p-4 gap-3 justify-between">
-        <div className="max-w-sm p-6 bg-white border mb-5 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-          <a href="#">
-            <h5 className="mb-2 font-custom text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-              Share Your Message
-            </h5>
-          </a>
-          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-            Choose a song and write a heartfelt message to someone special.
-          </p>
-          <a
-            href="#"
-            className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-black rounded-lg hover:bg-black/80 focus:ring-4 focus:outline-none focus:ring-black/50 dark:bg-black dark:hover:bg-black/80 dark:focus:ring-black/50"
+    <div className="flex flex-col min-h-screen bg-white text-gray-800">
+      <InitialAnimation />
+      <Navbar />
+      <main className="flex-grow">
+        <div className="container mx-auto px-4 py-8 md:py-16 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6">Menfess Masyarakat Polines</h2>
+          <Link
+            href="https://www.instagram.com/stories/thepdfway/3511672612546304368?utm_source=ig_story_item_share&igsh=dHZ6MWtpdDV5MTVw"
+            className="inline-flex items-center justify-center px-4 py-2 mb-8 text-sm md:text-base font-medium text-gray-600 hover:text-gray-800 transition-colors border border-gray-300 rounded-full hover:border-gray-400"
           >
-            Create Massage
-            <svg
-              className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 10"
+            <span>saran/masukan/fitur baru</span>
+            <ArrowUpRight className="ml-2 h-4 w-4 md:h-5 md:w-5" />
+          </Link>
+          <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-12 md:mb-16">
+            <Button
+              asChild
+              className="bg-gray-800 text-white px-6 md:px-8 py-2.5 md:py-3 rounded-full hover:bg-gray-900 transition-colors"
             >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M1 5h12m0 0L9 1m4 4L9 9"
-              />
-            </svg>
-          </a>
-        </div>
-
-        <div className="max-w-sm p-6 bg-white border mb-5 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-          <a href="#">
-            <h5 className="mb-2 font-custom text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-              Browse Massage
-            </h5>
-          </a>
-          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-            Find messages that were written for you. Search by your name to
-            discover heartfelt dedications.
-          </p>
-          <a
-            href="#"
-            className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-black rounded-lg hover:bg-black/80 focus:ring-4 focus:outline-none focus:ring-black/50 dark:bg-black dark:hover:bg-black/80 dark:focus:ring-black/50"
-          >
-            Browse Massage
-            <svg
-              className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 10"
+              <Link href="/message">Kirim Menfess</Link>
+            </Button>
+            <Button
+              asChild
+              className="border-2 border-gray-800 bg-white text-gray-800 px-6 md:px-8 py-2.5 md:py-3 rounded-full hover:bg-gray-100 transition-colors"
             >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M1 5h12m0 0L9 1m4 4L9 9"
-              />
-            </svg>
-          </a>
+              <Link href="/search-message">Explore Menfess</Link>
+            </Button>
+          </div>
+          <div className="relative w-full max-w-7xl mx-auto overflow-hidden mb-16">
+            <DynamicCarousel />
+          </div>
+          <div className="mt-16">
+            <h3 className="text-2xl md:text-3xl font-bold mb-8">Menfess Terbaru</h3>
+            {loading ? (
+              <p>Loading...</p>
+            ) : error ? (
+              <p className="text-red-500">{error}</p>
+            ) : recentlyAddedMessages.length === 0 ? (
+              <p>No recent messages found.</p>
+            ) : (
+              <div className="relative">
+                <div 
+                  ref={containerRef}
+                  className={`
+                    ${isMobile ? 'flex overflow-x-auto snap-x snap-mandatory scrollbar-hide' : 'flex justify-center'}
+                    gap-4
+                  `}
+                  onScroll={handleScroll}
+                >
+                  {recentlyAddedMessages.map((msg) => (
+                    <div 
+                      key={msg.id} 
+                      className={`
+                        ${isMobile ? 'flex flex-shrink-0 w-full snap-center justify-center' : ''}
+                      `}
+                    >
+                      <Link href={`/message/${msg.id}`}>
+                        <CarouselCard 
+                          to={msg.recipient} 
+                          from={msg.sender} 
+                          message={msg.message}
+                          songTitle={msg.song?.title}
+                          artist={msg.song?.artist}
+                          coverUrl={msg.song?.coverUrl}
+                        />
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+                {isMobile && (
+                  <div className="flex justify-center space-x-2 mt-4">
+                    {recentlyAddedMessages.map((_, index) => (
+                      <motion.div
+                        key={index}
+                        className={`h-2 w-2 rounded-full ${currentCard === index ? 'bg-gray-800' : 'bg-gray-300'}`}
+                        initial={false}
+                        animate={{ scale: currentCard === index ? 1.2 : 1 }}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
-
-        <div className="max-w-sm p-6 bg-white border mb-5 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-          <a href="#">
-            <h5 className="mb-2 font-custom text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-              Detail Message
-            </h5>
-          </a>
-          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-            You can click on any message card to read the full story and listen
-            to the chosen song!
-          </p>
-          <a
-            href="#"
-            className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-black rounded-lg hover:bg-black/80 focus:ring-4 focus:outline-none focus:ring-black/50 dark:bg-black dark:hover:bg-black/80 dark:focus:ring-black/50"
-          >
-            Show More
-            <svg
-              className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 10"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M1 5h12m0 0L9 1m4 4L9 9"
-              />
-            </svg>
-          </a>
-        </div>
-      </div>
-
-      <MarqueeDemo />
+      </main>
+      <Footer />
     </div>
   );
 }
